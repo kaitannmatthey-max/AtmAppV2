@@ -11,42 +11,30 @@ public class AccountService {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	// deposit money
-	public static void depositMoney() throws IOException {
-		// ask the user what account they want to deposit into
-		System.out.print("Which account number would you like to deposit money into?: ");
-		int accountNumber = scanner.nextInt();
-		scanner.nextLine();
+	public static void depositMoney(int accountNumber, double depositAmount, String filePath) throws IOException {
 		
-		// prompt the user to deposit money
-		System.out.print("How much would you like to deposit?: ");
+		Account account = AccountRepository.getAccountByAccountNumber(accountNumber, filePath);
+		account = AccountRepository.updateAccountBalanceByAccount(account, depositAmount, filePath);
+		displayBalance(account.getBalance());
 		
-		// get a valid number entry from the user
-		boolean isValid = false;
-		double number = 0;
-		
-		while (!isValid) {
-			try {
-				number = Double.parseDouble(scanner.nextLine());
-				number = Math.floor(number * 100) / 100;
-				isValid = true;
-			}
-			catch(NumberFormatException numberFormatException) {
-				System.out.println("Invalid value. Please enter a number.");
-				System.out.println();
-				System.out.print("Re-enter ammount: ");
-			}
-		}
-		
-		// update the account balance
-		Account account = AccountRepository.getAccountByAccountNumber(accountNumber);
-		account = AccountRepository.updateAccountBalanceByAccount(account, number);
-		
-		// display the new balance
-		System.out.println("Account Balance: " + account.getBalance());
 	}
 	
 	// withdraw money
+	public static void withdrawMoney(int accountNumber, double withdrawAmount, String filePath) throws IOException {
+		Account account = AccountRepository.getAccountByAccountNumber(accountNumber, filePath);
+		account = AccountRepository.updateAccountBalanceByAccount(account, - withdrawAmount, filePath);
+		displayBalance(account.getBalance());
+	}
 	
-	// check balance
-
+	public static double getBalance(int accountNumber, String filePath) throws FileNotFoundException {
+		Account account = AccountRepository.getAccountByAccountNumber(accountNumber, filePath);
+		displayBalance(account.getBalance());
+		
+		return account.getBalance();
+	}
+	
+	private static void displayBalance(double balance) {
+		// display the new balance
+		System.out.println("Account Balance: " + balance);
+	}
 }

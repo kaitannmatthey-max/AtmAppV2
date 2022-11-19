@@ -13,8 +13,8 @@ import model.Account;
 public class AccountRepository {
 
 	// gets an account from the "db" by account number
-	public static Account getAccountByAccountNumber(int accountNumber) throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File("C:\\Users\\kaita\\Documents\\workspace-spring-tool-suite-4-4.16.1.RELEASE\\AtmAppV2\\src\\data\\account1.txt"));
+	public static Account getAccountByAccountNumber(int accountNumber, String filePath) throws FileNotFoundException {
+		Scanner scanner = new Scanner(new File(filePath));
 		
 		Account account = new Account();
 		
@@ -25,11 +25,11 @@ public class AccountRepository {
 	}
 	
 	// update an account's balance by account number
-	public static Account updateAccountBalanceByAccount(Account account, double depositAmount) throws IOException {
+	public static Account updateAccountBalanceByAccount(Account account, double depositAmount, String filePath) throws IOException {
 		try (PrintWriter out = new PrintWriter(
 				new BufferedWriter(
 						new FileWriter(
-								new File("C:\\Users\\kaita\\Documents\\workspace-spring-tool-suite-4-4.16.1.RELEASE\\AtmAppV2\\src\\data\\account1.txt"))))) {
+								new File(filePath))))) {
 			
 			double newBalance = account.getBalance() + depositAmount;
 			account.setBalance(newBalance);
@@ -45,8 +45,3 @@ public class AccountRepository {
 		
 	}
 }
-
-// PAGE 289
-// under the saveAll method
-// use the same from scanner above: new File(filePAth) from getAccountByAcountNumber^^^
-// import all my imports
